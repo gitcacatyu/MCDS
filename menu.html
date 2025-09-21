@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/images/sublime.png">
+    <title>Menu Mariang</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(50deg, black, pink);
+            color: white;
+            text-align: center;
+        }
+        h1 {
+            margin: 20px 0;
+        }
+        .menu-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            width: 220px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .card h2 {
+            margin: 10px 0;
+            font-size: 22px;
+            color: #ff69b4;
+        }
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .info {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .card button {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .card button:hover {
+            background: #880048;
+        }
+        .voltar {
+            margin-top: 30px;
+        }
+        .voltar input {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input:hover{
+           background-color: #880048; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Menu de Cartões - Mariang</h1>
+    <div class="menu-container">
+        <div class="card">
+            <h2>Comum</h2>
+            <p class="price">R$ 30,00</p>
+            <p class="info">Desconto: 15%<br>Recarga: 1 mês</p>
+            <button onclick="selecionar('OFC', 50, 15)">Selecionar</button>
+        </div>
+        <div class="card">
+            <h2>PRO</h2>
+            <p class="price">R$ 50,00</p>
+            <p class="info">Desconto: 25%<br>Recarga: 1 mês</p>
+            <button onclick="selecionar('PRO', 100, 25)">Selecionar</button>
+        </div>
+        <div class="card">
+            <h2>Premium</h2>
+            <p class="price">R$ 100,00</p>
+            <p class="info">Desconto: 50%<br>Recarga: 1 mês</p>
+            <button onclick="selecionar('Premium', 150, 50)">Selecionar</button>
+        </div>
+        <div class="card">
+            <h2>VIP</h2>
+            <p class="price">R$ 120,00</p>
+            <p class="info">Desconto: 75%<br>Recarga: 1 mês</p>
+            <button onclick="selecionar('VIP', 200, 75)">Selecionar</button>
+        </div>
+        <div class="card">
+            <h2>Sublime</h2>
+            <p class="price">R$ 150,00</p>
+            <p class="info">Desconto: 85%<br>Recarga: 1 mês</p>
+            <button onclick="selecionar('Sublime', 300, 90)">Selecionar</button>
+        </div>
+        <div class="card">
+            <h2>TO</h2>
+            <p class="price">R$ 180,00</p>
+            <p class="info">Desconto: 99%<br>Recarga: 1 mês</p>
+            <button onclick="selecionar('TO', 500, 100)">Selecionar</button>
+        </div>
+    </div>
+
+    <div class="voltar">
+        <input type="button" value="INICIAL" onclick="location.href='index.html'">
+    </div>
+
+    <script>
+        function selecionar(nome, preco, desconto) {
+            let valorDesconto = preco * (desconto / 100);
+            let precoFinal = preco - valorDesconto;
+            if (precoFinal < 0) precoFinal = 0;
+            alert(`Plano: ${nome}\nPreço original: R$ ${preco}\nDesconto: ${desconto}%\nPreço final: R$ ${precoFinal}`);
+        }
+    </script>
+</body>
+</html>

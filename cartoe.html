@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cartões de Descontos — Tabela de Preços</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #111a2e;
+      --muted: #9bb0c2;
+      --text: #e8f0ff;
+      --ok: #30d158;
+      --accent: #2dd4bf; /* teal */
+      --accent-2: #22c55e; /* green */
+      --ring: #67e8f9;
+      --shadow: 0 10px 30px rgba(2, 6, 23, .5);
+    }
+    * { box-sizing: border-box }
+    html, body { height: 100% }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(45, 212, 191, .12), transparent),
+                  radial-gradient(1000px 500px at 90% -20%, rgba(34, 197, 94, .12), transparent),
+                  linear-gradient(180deg, #0a0f1d, #0b1220 40%);
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 32px 20px 80px }
+    header { display: grid; gap: 10px; margin-bottom: 24px }
+    header h1 { margin: 0; font-size: clamp(1.5rem, 1.1rem + 2vw, 2.3rem); letter-spacing: .3px }
+    header p { margin: 0; color: var(--muted) }
+
+    .grid { display: grid; grid-template-columns: 1fr; gap: 16px }
+    @media (min-width: 900px) { .grid { grid-template-columns: 1.2fr .8fr } }
+
+    .card { background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+            border: 1px solid rgba(148, 163, 184, .18); border-radius: 18px; box-shadow: var(--shadow) }
+
+    .card .inner { padding: 18px }
+    .plans { display: grid; gap: 12px }
+
+    .plan { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 10px;
+            padding: 14px 14px; border-radius: 14px; background: rgba(15, 23, 42, .6);
+            border: 1px solid rgba(148, 163, 184, .15) }
+
+    .plan h3 { margin: 0; font-size: 1.05rem }
+    .badge { display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .5px;
+             padding: 4px 8px; border-radius: 999px; border: 1px solid rgba(148,163,184,.3);
+             background: linear-gradient(180deg, rgba(45, 212, 191, .15), rgba(34, 197, 94, .15)) }
+
+    .kvs { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-top: 8px }
+    .kv { padding: 10px; border-radius: 12px; background: rgba(148,163,184,.05); border: 1px dashed rgba(148,163,184,.2) }
+    .kv small { display: block; color: var(--muted); font-size: .78rem; margin-bottom: 4px }
+
+    .table { width: 100%; border-collapse: collapse; font-size: .95rem }
+    .table th, .table td { text-align: left; padding: 12px 10px; border-bottom: 1px solid rgba(148,163,184,.15) }
+    .table th { color: var(--muted); font-weight: 600 }
+    .table tfoot td { font-weight: 800 }
+
+    .pill { font-variant-numeric: tabular-nums; padding: 6px 10px; border-radius: 999px; background: rgba(45, 212, 191, .12); border: 1px solid rgba(45,212,191,.4) }
+
+    .calc { display: grid; gap: 12px }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+    label { font-size: .9rem; color: var(--muted) }
+    select, input[type="number"], button {
+      width: 100%; border-radius: 12px; padding: 12px 12px; font-size: 1rem; color: var(--text);
+      background: #0e1628; border: 1px solid rgba(148,163,184,.25); outline: none;
+    }
+    select:focus, input:focus, button:focus { box-shadow: 0 0 0 3px rgba(103, 232, 249, .35) }
+    button { cursor: pointer; font-weight: 800; letter-spacing: .4px;
+      background-image: linear-gradient(90deg, rgba(45,212,191,.2), rgba(34,197,94,.2));
+      border: 1px solid rgba(45,212,191,.45);
+    }
+    .result { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 6px }
+    .result .box { padding: 14px; border-radius: 14px; background: rgba(148,163,184,.06); border: 1px solid rgba(148,163,184,.2) }
+
+    .foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 16px; color: var(--muted) }
+    .foot a { color: var(--accent); text-decoration: none }
+
+    .ribbon {
+      position: fixed; right: -36px; top: 20px; transform: rotate(35deg); z-index: 2;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2)); color: #052014; font-weight: 800;
+      padding: 8px 48px; border: 1px solid rgba(34,197,94,.6); box-shadow: var(--shadow)
+    }
+  </style>
+</head>
+<body>
+  <div class="ribbon" aria-hidden="true">Tabela Oficial</div>
+  <div class="container">
+    <header>
+      <h1>Cartões de Descontos — Preços e Descontos</h1>
+      <p>Consulta rápida e sem enrolação: preço cheio, desconto, quanto abate e quanto você paga no final. Tudo em R$.</p>
+    </header>
+
+    <div class="grid">
+      <!-- Lista de planos -->
+      <section class="card" aria-labelledby="planos">
+        <div class="inner">
+          <h2 id="planos" style="margin:0 0 10px 0">Planos</h2>
+          <div class="plans" id="plans"></div>
+        </div>
+      </section>
+
+      <!-- Calculadora -->
+      <aside class="card" aria-labelledby="calc">
+        <div class="inner">
+          <h2 id="calc" style="margin:0 0 10px 0">Calculadora</h2>
+          <div class="calc">
+            <div class="row">
+              <label>
+                Escolha o plano
+                <select id="selectPlan" aria-label="Escolha o plano"></select>
+              </label>
+              <label>
+                Quantidade
+                <input id="qtd" type="number" min="1" value="1" aria-label="Quantidade" />
+              </label>
+            </div>
+            <button id="btnCalc">Calcular total</button>
+            <div class="result">
+              <div class="box">
+                <small>Total com desconto</small>
+                <div id="total" class="pill">—</div>
+              </div>
+              <div class="box">
+                <small>Você economiza</small>
+                <div id="save" class="pill">—</div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <span>Formato pt-BR, valores em BRL.</span>
+            <a href="./index.html">Voltar</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Tabela resumida -->
+    <section class="card" style="margin-top:16px" aria-labelledby="tabela">
+      <div class="inner">
+        <h2 id="tabela" style="margin:0 0 10px 0">Resumo em Tabela</h2>
+        <div style="overflow:auto">
+          <table class="table" id="table"></table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    const planos = [
+      { nome: 'Comum', preco: 30, desconto: 0.15 },
+      { nome: 'PRO', preco: 50, desconto: 0.25 },
+      { nome: 'Premium', preco: 100, desconto: 0.50 },
+      { nome: 'VIP', preco: 120, desconto: 0.75 },
+      { nome: 'SUBLIME', preco: 150, desconto: 0.90 },
+      { nome: 'TO', preco: 180, desconto: 1.00 },
+    ];
+
+    function calc(preco, desconto) {
+      const abatido = preco * desconto;
+      const final = Math.max(0, preco - abatido);
+      return { abatido, final };
+    }
+
+    // Render cards de planos
+    const plansEl = document.getElementById('plans');
+    planos.forEach(p => {
+      const { abatido, final } = calc(p.preco, p.desconto);
+      const wrap = document.createElement('div');
+      wrap.className = 'plan';
+      wrap.innerHTML = `
+        <div>
+          <h3>${p.nome} <span class="badge">${Math.round(p.desconto * 100)}% OFF</span></h3>
+          <div class="kvs">
+            <div class="kv"><small>Preço cheio</small><strong>${brl.format(p.preco)}</strong></div>
+            <div class="kv"><small>Desconto</small><strong>${brl.format(abatido)}</strong></div>
+            <div class="kv"><small>Você paga</small><strong>${brl.format(final)}</strong></div>
+            <div class="kv"><small>Obs.</small><strong>${p.desconto === 1 ? 'Grátis 😎' : 'Aplicado na hora'}</strong></div>
+          </div>
+        </div>
+        <div><span class="pill">${brl.format(final)}</span></div>
+      `;
+      plansEl.appendChild(wrap);
+    });
+
+    // Preenche select e tabela
+    const select = document.getElementById('selectPlan');
+    const table = document.getElementById('table');
+
+    planos.forEach((p, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${p.nome} — ${Math.round(p.desconto*100)}% OFF`;
+      select.appendChild(opt);
+    });
+
+    function renderTable() {
+      let html = `
+        <thead>
+          <tr>
+            <th>Plano</th>
+            <th>Preço</th>
+            <th>Desconto</th>
+            <th>Abate</th>
+            <th>Preço Final</th>
+          </tr>
+        </thead>
+        <tbody>
+      `;
+      for (const p of planos) {
+        const { abatido, final } = calc(p.preco, p.desconto);
+        html += `
+          <tr>
+            <td>${p.nome}</td>
+            <td>${brl.format(p.preco)}</td>
+            <td>${Math.round(p.desconto*100)}%</td>
+            <td>${brl.format(abatido)}</td>
+            <td><strong>${brl.format(final)}</strong></td>
+          </tr>
+        `;
+      }
+      html += '</tbody>';
+      table.innerHTML = html;
+    }
+    renderTable();
+
+    // Calculadora
+    const qtd = document.getElementById('qtd');
+    const btn = document.getElementById('btnCalc');
+    const totalEl = document.getElementById('total');
+    const saveEl = document.getElementById('save');
+
+    function calcular() {
+      const idx = parseInt(select.value, 10) || 0;
+      const q = Math.max(1, parseInt(qtd.value, 10) || 1);
+      const p = planos[idx];
+      const { abatido, final } = calc(p.preco, p.desconto);
+      const total = final * q;
+      const economia = abatido * q;
+      totalEl.textContent = brl.format(total);
+      saveEl.textContent = brl.format(economia);
+    }
+
+    btn.addEventListener('click', calcular);
+    select.addEventListener('change', calcular);
+    qtd.addEventListener('input', calcular);
+    calcular();
+  </script>
+</body>
+</html>

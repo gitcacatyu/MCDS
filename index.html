@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/images/sublime.png">
+    <title>Cartões da Mariang</title>
+    <style>
+        body {
+            color: white;
+            background: linear-gradient(90deg, black, rgb(255, 81, 147));
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1, h3 {
+            margin: 10px 0;
+        }
+        .buttons input {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .buttons input:hover {
+            background: #ff1493;
+        }
+        .calc {
+            margin-top: 20px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            width: 150px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mariang</h1>
+    <p>Cartões</p>
+
+    <h1>Qual desejas?</h1>
+    <h3>Comum 15% - PRO 25% - Premium 50% - VIP 75% - SUBLIME 85% - TO 99%</h3>
+
+    <div class="buttons">
+        <input type="button" value="MENU" onclick="location.href = 'menu.html'">
+        <input type="button" value="CADASTRO" onclick="location.href = 'init.html'">
+        <input type="button" value="SABER PREÇO" onclick="location.href = 'preco.html'">
+        <input type="button" value="LISTA DE CARTÕES" onclick="location.href = 'list.html'">
+    </div>
+
+    <div class="calc">
+        <h2>Calcule seu desconto</h2>
+        <input type="number" id="preco" placeholder="Preço">
+        <select id="desconto">
+            <option value="15">Comum - 15%</option>
+            <option value="25">PRO - 25%</option>
+            <option value="50">Premium - 50%</option>
+            <option value="75">VIP - 75%</option>
+            <option value="85">Sublime - 85%</option>
+            <option value="99">TO - 99%</option>
+        </select>
+        <button onclick="calcular()">Calcular</button>
+        <p id="resultado"></p>
+    </div>
+
+    <script>
+        function calcular() {
+            let preco = parseFloat(document.getElementById('preco').value);
+            let desconto = parseInt(document.getElementById('desconto').value);
+            if (isNaN(preco)) {
+                document.getElementById('resultado').innerText = "Digite um preço válido!";
+                return;
+            }
+            let valorDesconto = preco * (desconto / 100);
+            let precoFinal = preco - valorDesconto;
+            document.getElementById('resultado').innerText = 
+                `Desconto: R$ ${valorDesconto.toFixed(2)} | Preço final: R$ ${precoFinal.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>

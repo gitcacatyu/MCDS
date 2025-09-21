@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/images/sublime.png">
+<title>Lista de Cartões da Vó</title>
+<style>
+  body { font-family: Arial; padding: 20px; background: linear-gradient(120deg, #ffa6ca, #ff00b3); min-height: 100vh; }
+  h1 { text-align: center; color: white; margin-bottom: 30px; }
+  ul { list-style: none; padding: 0; }
+  li { margin: 10px 0; background: #fff; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 0 8px rgba(0,0,0,0.3);}
+  span { font-weight: bold; }
+  button { margin-left: 5px; padding: 5px 10px; border-radius: 5px; cursor: pointer; border: none; }
+  button.edit { background-color: #ffd700; }
+  button.remove { background-color: #ff4d4d; color: white; }
+</style>
+</head>
+<body>
+
+<h1>Cartões da Vó</h1>
+
+<ul id="cardList"></ul>
+
+<script>
+const cardList = document.getElementById('cardList');
+
+// Pega os cartões do localStorage ou cria array vazio
+let cards = JSON.parse(localStorage.getItem('cards')) || [];
+
+function renderCards() {
+  cardList.innerHTML = '';
+  cards.forEach((card, index) => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <span>${card.name} - ${card.type} (${card.desconto}% desconto)</span>
+      <div>
+        <button class="edit" onclick="editCard(${index})">Editar</button>
+        <button class="remove" onclick="removeCard(${index})">Remover</button>
+      </div>
+    `;
+    cardList.appendChild(li);
+  });
+}
+
+function editCard(index) {
+  const name = prompt('Novo nome:', cards[index].name);
+  const type = prompt('Novo tipo:', cards[index].type);
+  const desconto = prompt('Novo desconto (%):', cards[index].desconto);
+
+  if(name && type && desconto) {
+    cards[index] = { name, type, desconto: parseInt(desconto) };
+    localStorage.setItem('cards', JSON.stringify(cards));
+    renderCards();
+  }
+}
+
+function removeCard(index) {
+  if(confirm('Deseja realmente remover este cartão?')) {
+    cards.splice(index, 1);
+    localStorage.setItem('cards', JSON.stringify(cards));
+    renderCards();
+  }
+}
+
+// Renderiza ao carregar
+renderCards();
+</script>
+
+</body>
+</html>

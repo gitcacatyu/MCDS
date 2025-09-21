@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/images/sublime.png">
+<title>Cadastro Cartão Mariang</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(120deg, #ffa6ca, #ff00b3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+    margin: 0;
+}
+h1 {
+    color: #ffffff;
+}
+form {
+    background-color: #333;
+    color: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    border: 2px solid #ff31f5;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 300px;
+}
+input, select, button {
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid rgb(255, 0, 149);
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+button {
+    background-color: #ff1c8d;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+button:hover {
+    background-color: #ea00ff;
+    transform: scale(1.05);
+}
+#resultado {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #b700ff;
+    text-align: center;
+}
+</style>
+</head>
+<body>
+
+<h1>Cadastro de Cartão Mariang</h1>
+
+<form id="cartaoForm">
+    <label for="nome">Nome do Usuário:</label>
+    <input type="text" id="nome" placeholder="Seu nome" required>
+
+    <label for="cartao">Escolha seu Cartão:</label>
+    <select id="cartao" required>
+        <option value="">--Selecione--</option>
+        <option value="OFC">OFC (15% desconto)</option>
+        <option value="PRO">PRO (25% desconto)</option>
+        <option value="Premium">Premium (50% desconto)</option>
+        <option value="VIP">VIP (75% desconto)</option>
+        <option value="SUMBLIME">SUBLIME (90% desconto)</option>
+        <option value="TO"> TO (100% desconto)</option>
+    </select>
+
+    <button type="submit">Cadastrar Cartão</button>
+</form>
+
+<div id="resultado"></div>
+
+<script>
+const form = document.getElementById("cartaoForm");
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const nome = document.getElementById("nome").value.trim();
+    const cartao = document.getElementById("cartao").value;
+
+    if (!nome || !cartao) return;
+
+    const descontos = {
+        OFC: 15,
+        PRO: 25,
+        Premium: 50,
+        VIP: 75,
+        SUMBLIME: 90,
+        TO: 100
+    };
+
+    const desconto = descontos[cartao];
+
+    // Pega lista atual de cartões ou cria nova
+    let cards = JSON.parse(localStorage.getItem('cards')) || [];
+
+    // Adiciona novo cartão
+    cards.push({ name: nome, type: cartao, desconto });
+
+    // Salva lista no localStorage
+    localStorage.setItem('cards', JSON.stringify(cards));
+
+    // Redireciona para a lista
+    window.location.href = "list.html";
+});
+</script>
+
+
+</body>
+</html>
